@@ -1,4 +1,4 @@
-package com.javainuse.config;
+package st43189.upce.cz.config;
 
 import java.io.Serializable;
 import java.util.Date;

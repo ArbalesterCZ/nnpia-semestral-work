@@ -1,4 +1,4 @@
-package com.javainuse.model;
+package st43189.upce.cz.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;

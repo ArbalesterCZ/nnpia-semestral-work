@@ -1,4 +1,4 @@
-package com.javainuse.service;
+package st43189.upce.cz.service;
 
 import java.util.ArrayList;
 import java.util.Collections;

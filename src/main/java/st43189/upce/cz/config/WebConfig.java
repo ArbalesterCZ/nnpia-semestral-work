@@ -1,4 +1,4 @@
-package com.javainuse.config;
+package st43189.upce.cz.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

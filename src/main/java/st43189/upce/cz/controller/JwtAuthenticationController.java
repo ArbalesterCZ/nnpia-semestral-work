@@ -1,4 +1,4 @@
-package com.javainuse.controller;
+package st43189.upce.cz.controller;
 
 import java.util.Objects;
 
@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
-import com.javainuse.config.JwtTokenUtil;
-import com.javainuse.model.JwtRequest;
-import com.javainuse.model.JwtResponse;
+import st43189.upce.cz.config.JwtTokenUtil;
+import st43189.upce.cz.model.JwtRequest;
+import st43189.upce.cz.model.JwtResponse;
 
 @RestController
 @CrossOrigin
