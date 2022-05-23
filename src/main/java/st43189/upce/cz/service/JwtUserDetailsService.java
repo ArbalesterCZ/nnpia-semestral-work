@@ -2,24 +2,32 @@ package st43189.upce.cz.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import st43189.upce.cz.repository.UserRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    if ("javainuse".equals(username))
-      return new User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", new ArrayList<>());
+    private final UserRepository userRepository;
 
-    if ("javainuseWithRole".equals(username))
-      return new User("javainuseWithRole", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6", Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+    public JwtUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    throw new UsernameNotFoundException("User not found with username: " + username);
-  }
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Optional<st43189.upce.cz.entity.User> found = userRepository.findByEmail(email);
+        if (found.isPresent())
+            return new User(email, found.get().getPassword(), new ArrayList<>());
+
+        throw new UsernameNotFoundException("User not found with email: " + email);
+    }
 }
