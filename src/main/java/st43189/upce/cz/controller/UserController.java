@@ -1,6 +1,5 @@
 package st43189.upce.cz.controller;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import st43189.upce.cz.dto.UserDto;
 import st43189.upce.cz.entity.User;
@@ -14,11 +13,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @PostMapping
@@ -56,7 +53,7 @@ public class UserController {
 
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+        user.setPassword(userService.encode(dto.getPassword()));
 
         return user;
     }
