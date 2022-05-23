@@ -24,7 +24,6 @@ public class Product {
     @Column
     private String description;
     @ManyToOne
-    @JsonIgnore
     private Category category;
     @OneToMany(mappedBy = "product")
     private Set<Score> scoreSet;

@@ -5,6 +5,7 @@ import st43189.upce.cz.dto.CategoryDto;
 import st43189.upce.cz.entity.Category;
 import st43189.upce.cz.service.CategoryService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -18,30 +19,33 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category create(@RequestBody CategoryDto dto) {
-        return categoryService.createOrUpdate(fromDto(dto));
+    public CategoryDto create(@RequestBody CategoryDto dto) {
+        return toDto(categoryService.createOrUpdate(fromDto(dto)));
     }
 
     @GetMapping
-    public List<Category> readAll() {
-        return categoryService.getAll();
+    public List<CategoryDto> readAll() {
+        List<CategoryDto> dtoList = new LinkedList<>();
+        categoryService.getAll().forEach(category -> dtoList.add(toDto(category)));
+
+        return dtoList;
     }
 
     @GetMapping("/{id}")
-    public Category read(@PathVariable long id) {
-        return categoryService.find(id);
+    public CategoryDto read(@PathVariable long id) {
+        return toDto(categoryService.find(id));
     }
 
     @PutMapping("/{id}")
-    public Category update(@PathVariable long id, @RequestBody CategoryDto dto) {
+    public CategoryDto update(@PathVariable long id, @RequestBody CategoryDto dto) {
         Category category = fromDto(dto);
         category.setId(id);
-        return categoryService.createOrUpdate(category);
+        return toDto(categoryService.createOrUpdate(category));
     }
 
     @DeleteMapping("/{id}")
-    public Category delete(@PathVariable long id) {
-        return categoryService.delete(id);
+    public CategoryDto delete(@PathVariable long id) {
+        return toDto(categoryService.delete(id));
     }
 
     private Category fromDto(CategoryDto dto) {
@@ -50,5 +54,14 @@ public class CategoryController {
         category.setName(dto.getName());
 
         return category;
+    }
+
+    private CategoryDto toDto(Category category) {
+        CategoryDto dto = new CategoryDto();
+
+        dto.setId(category.getId());
+        dto.setName(category.getName());
+
+        return dto;
     }
 }

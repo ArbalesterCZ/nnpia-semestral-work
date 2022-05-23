@@ -5,6 +5,7 @@ import st43189.upce.cz.dto.ProductDto;
 import st43189.upce.cz.entity.Product;
 import st43189.upce.cz.service.ProductService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -18,30 +19,33 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product create(@RequestBody ProductDto dto) {
-        return productService.createOrUpdate((fromDto(dto)));
+    public ProductDto create(@RequestBody ProductDto dto) {
+        return toDto(productService.createOrUpdate((fromDto(dto))));
     }
 
     @GetMapping
-    public List<Product> readAll() {
-        return productService.getAll();
+    public List<ProductDto> readAll() {
+        List<ProductDto> dtoList = new LinkedList<>();
+        productService.getAll().forEach(product -> dtoList.add(toDto(product)));
+
+        return dtoList;
     }
 
     @GetMapping("/{id}")
-    public Product read(@PathVariable long id) {
-        return productService.find(id);
+    public ProductDto read(@PathVariable long id) {
+        return toDto(productService.find(id));
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable long id, @RequestBody ProductDto dto) {
+    public ProductDto update(@PathVariable long id, @RequestBody ProductDto dto) {
         Product product = fromDto(dto);
         product.setId(id);
-        return productService.createOrUpdate(product);
+        return toDto(productService.createOrUpdate(product));
     }
 
     @DeleteMapping("/{id}")
-    public Product delete(@PathVariable long id) {
-        return productService.delete(id);
+    public ProductDto delete(@PathVariable long id) {
+        return toDto(productService.delete(id));
     }
 
     private Product fromDto(ProductDto dto) {
@@ -53,5 +57,17 @@ public class ProductController {
         product.setCategory(productService.findCategory(dto.getCategoryId()));
 
         return product;
+    }
+
+    private ProductDto toDto(Product product) {
+        ProductDto dto = new ProductDto();
+
+        dto.setId(product.getId());
+        dto.setPrice(product.getPrice());
+        dto.setName(product.getName());
+        dto.setDescription(product.getDescription());
+        dto.setCategoryId(product.getCategory().getId());
+
+        return dto;
     }
 }

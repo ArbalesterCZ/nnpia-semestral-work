@@ -5,6 +5,7 @@ import st43189.upce.cz.dto.ScoreDto;
 import st43189.upce.cz.entity.Score;
 import st43189.upce.cz.service.ScoreService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -18,28 +19,31 @@ public class ScoreController {
     }
 
     @PostMapping
-    public Score create(@RequestBody ScoreDto dto) {
-        return scoreService.createOrUpdate(fromDto(dto));
+    public ScoreDto create(@RequestBody ScoreDto dto) {
+        return toDto(scoreService.createOrUpdate(fromDto(dto)));
     }
 
     @GetMapping
-    public List<Score> readAll() {
-        return scoreService.getAll();
+    public List<ScoreDto> readAll() {
+        List<ScoreDto> dtoList = new LinkedList<>();
+        scoreService.getAll().forEach(score -> dtoList.add(toDto(score)));
+
+        return dtoList;
     }
 
     @GetMapping("/{userId}/{productId}")
-    public Score read(@PathVariable long userId, @PathVariable long productId) {
-        return scoreService.find(userId, productId);
+    public ScoreDto read(@PathVariable long userId, @PathVariable long productId) {
+        return toDto(scoreService.find(userId, productId));
     }
 
     @PutMapping
-    public Score update(@RequestBody ScoreDto dto) {
-        return scoreService.createOrUpdate(fromDto(dto));
+    public ScoreDto update(@RequestBody ScoreDto dto) {
+        return toDto(scoreService.createOrUpdate(fromDto(dto)));
     }
 
     @DeleteMapping("/{userId}/{productId}")
-    public Score delete(@PathVariable long userId, @PathVariable long productId) {
-        return scoreService.delete(userId, productId);
+    public ScoreDto delete(@PathVariable long userId, @PathVariable long productId) {
+        return toDto(scoreService.delete(userId, productId));
     }
 
     private Score fromDto(ScoreDto dto) {
@@ -53,5 +57,18 @@ public class ScoreController {
         score.setProduct(scoreService.findProduct(dto.getProductId()));
 
         return score;
+    }
+
+    private ScoreDto toDto(Score score) {
+        ScoreDto scoreDto = new ScoreDto();
+
+        scoreDto.setValue(scoreDto.getValue());
+        scoreDto.setComment(scoreDto.getComment());
+        scoreDto.setTimestamp(score.getTimestamp());
+
+        scoreDto.setUserId(score.getUser().getId());
+        scoreDto.setProductId(score.getProduct().getId());
+
+        return scoreDto;
     }
 }

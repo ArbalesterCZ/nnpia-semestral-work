@@ -5,6 +5,7 @@ import st43189.upce.cz.dto.ProductInCartDto;
 import st43189.upce.cz.entity.ProductInCart;
 import st43189.upce.cz.service.ProductInCartService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -18,31 +19,34 @@ public class ProductInCartController {
     }
 
     @PostMapping
-    public ProductInCart create(ProductInCartDto dto) {
-        return productInCartService.createOrUpdate(fromDto(dto));
+    public ProductInCartDto create(@RequestBody ProductInCartDto dto) {
+        return toDto(productInCartService.createOrUpdate(fromDto(dto)));
     }
 
     @GetMapping
-    public List<ProductInCart> readAll() {
-        return productInCartService.getAll();
+    public List<ProductInCartDto> readAll() {
+        List<ProductInCartDto> dtoList = new LinkedList<>();
+        productInCartService.getAll().forEach(productInCart -> dtoList.add(toDto(productInCart)));
+
+        return dtoList;
     }
 
     @GetMapping("/{userId}/{productId}")
-    public ProductInCart read(@PathVariable long userId, @PathVariable long productId) {
-        return productInCartService.find(userId, productId);
+    public ProductInCartDto read(@PathVariable long userId, @PathVariable long productId) {
+        return toDto(productInCartService.find(userId, productId));
     }
 
     @PutMapping
-    public ProductInCart update(@RequestBody ProductInCartDto dto) {
-        return productInCartService.createOrUpdate(fromDto(dto));
+    public ProductInCartDto update(@RequestBody ProductInCartDto dto) {
+        return toDto(productInCartService.createOrUpdate(fromDto(dto)));
     }
 
     @DeleteMapping("/{userId}/{productId}}")
-    public ProductInCart delete(@PathVariable long userId, @PathVariable long productId) {
-        return productInCartService.delete(userId, productId);
+    public ProductInCartDto delete(@PathVariable long userId, @PathVariable long productId) {
+        return toDto(productInCartService.delete(userId, productId));
     }
 
-    private ProductInCart fromDto(@RequestBody ProductInCartDto dto) {
+    private ProductInCart fromDto(ProductInCartDto dto) {
         ProductInCart productInCart = new ProductInCart();
 
         productInCart.setAmount(dto.getAmount());
@@ -50,5 +54,16 @@ public class ProductInCartController {
         productInCart.setProduct(productInCartService.findProduct(dto.getProductId()));
 
         return productInCart;
+    }
+
+    private ProductInCartDto toDto(ProductInCart productInCart) {
+        ProductInCartDto dto = new ProductInCartDto();
+
+        dto.setAmount(productInCart.getAmount());
+
+        dto.setUserId(productInCart.getUser().getId());
+        dto.setProductId(productInCart.getProduct().getId());
+
+        return dto;
     }
 }

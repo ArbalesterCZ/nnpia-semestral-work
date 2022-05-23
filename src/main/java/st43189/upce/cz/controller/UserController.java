@@ -6,6 +6,7 @@ import st43189.upce.cz.dto.UserDto;
 import st43189.upce.cz.entity.User;
 import st43189.upce.cz.service.UserService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -21,30 +22,33 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody UserDto dto) {
-        return userService.createOrUpdate((fromDto(dto)));
+    public UserDto create(@RequestBody UserDto dto) {
+        return toDto(userService.createOrUpdate((fromDto(dto))));
     }
 
     @GetMapping
-    public List<User> readAll() {
-        return userService.getAll();
+    public List<UserDto> readAll() {
+        List<UserDto> dtoList = new LinkedList<>();
+        userService.getAll().forEach(user -> dtoList.add(toDto(user)));
+
+        return dtoList;
     }
 
     @GetMapping("/{id}")
-    public User read(@PathVariable long id) {
-        return userService.find(id);
+    public UserDto read(@PathVariable long id) {
+        return toDto(userService.find(id));
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable long id, @RequestBody UserDto dto) {
+    public UserDto update(@PathVariable long id, @RequestBody UserDto dto) {
         User user = fromDto(dto);
         user.setId(id);
-        return userService.createOrUpdate(user);
+        return toDto(userService.createOrUpdate(user));
     }
 
     @DeleteMapping("/{id}")
-    public User delete(@PathVariable long id) {
-        return userService.delete(id);
+    public UserDto delete(@PathVariable long id) {
+        return toDto(userService.delete(id));
     }
 
     private User fromDto(UserDto dto) {
@@ -55,5 +59,16 @@ public class UserController {
         user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
 
         return user;
+    }
+
+    private UserDto toDto(User user) {
+        UserDto dto = new UserDto();
+
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setPassword(user.getPassword());
+
+        return dto;
     }
 }
