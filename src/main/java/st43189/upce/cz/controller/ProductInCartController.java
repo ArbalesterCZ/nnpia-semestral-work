@@ -18,8 +18,8 @@ public class ProductInCartController {
         this.productInCartService = productInCartService;
     }
 
-    @PostMapping
-    public ProductInCartDto create(@RequestBody ProductInCartDto dto) {
+    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+    public ProductInCartDto createOrUpdate(@RequestBody ProductInCartDto dto) {
         return toDto(productInCartService.createOrUpdate(fromDto(dto)));
     }
 
@@ -34,11 +34,6 @@ public class ProductInCartController {
     @GetMapping("/{userId}/{productId}")
     public ProductInCartDto read(@PathVariable long userId, @PathVariable long productId) {
         return toDto(productInCartService.find(userId, productId));
-    }
-
-    @PutMapping
-    public ProductInCartDto update(@RequestBody ProductInCartDto dto) {
-        return toDto(productInCartService.createOrUpdate(fromDto(dto)));
     }
 
     @DeleteMapping("/{userId}/{productId}}")

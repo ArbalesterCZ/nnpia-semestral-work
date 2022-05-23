@@ -18,8 +18,8 @@ public class ScoreController {
         this.scoreService = scoreService;
     }
 
-    @PostMapping
-    public ScoreDto create(@RequestBody ScoreDto dto) {
+    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+    public ScoreDto createOrUpdate(@RequestBody ScoreDto dto) {
         return toDto(scoreService.createOrUpdate(fromDto(dto)));
     }
 
@@ -34,11 +34,6 @@ public class ScoreController {
     @GetMapping("/{userId}/{productId}")
     public ScoreDto read(@PathVariable long userId, @PathVariable long productId) {
         return toDto(scoreService.find(userId, productId));
-    }
-
-    @PutMapping
-    public ScoreDto update(@RequestBody ScoreDto dto) {
-        return toDto(scoreService.createOrUpdate(fromDto(dto)));
     }
 
     @DeleteMapping("/{userId}/{productId}")
