@@ -1,10 +1,8 @@
 package st43189.upce.cz.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
