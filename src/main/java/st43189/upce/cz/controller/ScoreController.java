@@ -7,7 +7,6 @@ import st43189.upce.cz.service.ScoreService;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/score")
@@ -26,17 +25,8 @@ public class ScoreController {
 
     @GetMapping
     public List<ScoreDto> readAll() {
-        return scoreService
-                .getAll()
-                .stream()
-                .map(ScoreController::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/{userId}")
-    public List<ScoreDto> readAllOfUser(@PathVariable long userId) {
         List<ScoreDto> dtoList = new LinkedList<>();
-        scoreService.getAllOfUser(userId).forEach(score -> dtoList.add(toDto(score)));
+        scoreService.getAll().forEach(score -> dtoList.add(toDto(score)));
 
         return dtoList;
     }
@@ -64,16 +54,16 @@ public class ScoreController {
         return score;
     }
 
-    private static ScoreDto toDto(Score score) {
-        ScoreDto dto = new ScoreDto();
+    private ScoreDto toDto(Score score) {
+        ScoreDto scoreDto = new ScoreDto();
 
-        dto.setValue(score.getValue());
-        dto.setComment(score.getComment());
-        dto.setTimestamp(score.getTimestamp());
+        scoreDto.setValue(scoreDto.getValue());
+        scoreDto.setComment(scoreDto.getComment());
+        scoreDto.setTimestamp(score.getTimestamp());
 
-        dto.setUserId(score.getUser().getId());
-        dto.setProductId(score.getProduct().getId());
+        scoreDto.setUserId(score.getUser().getId());
+        scoreDto.setProductId(score.getProduct().getId());
 
-        return dto;
+        return scoreDto;
     }
 }

@@ -5,8 +5,8 @@ import st43189.upce.cz.dto.ProductDto;
 import st43189.upce.cz.entity.Product;
 import st43189.upce.cz.service.ProductService;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -25,11 +25,10 @@ public class ProductController {
 
     @GetMapping
     public List<ProductDto> readAll() {
-        return productService
-                .getAll()
-                .stream()
-                .map(ProductController::toDto)
-                .collect(Collectors.toList());
+        List<ProductDto> dtoList = new LinkedList<>();
+        productService.getAll().forEach(product -> dtoList.add(toDto(product)));
+
+        return dtoList;
     }
 
     @GetMapping("/{id}")
@@ -60,7 +59,7 @@ public class ProductController {
         return product;
     }
 
-    private static ProductDto toDto(Product product) {
+    private ProductDto toDto(Product product) {
         ProductDto dto = new ProductDto();
 
         dto.setId(product.getId());

@@ -29,6 +29,10 @@ public class ScoreService {
         return scoreRepository.findAll();
     }
 
+    public List<Score> getAllOfUser(long id) {
+        return scoreRepository.findAllByUserId(id);
+    }
+
     public Score find(long userId, long productId) {
         return scoreRepository
                 .findByUserIdAndProductId(userId, productId)

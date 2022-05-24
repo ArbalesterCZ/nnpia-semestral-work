@@ -29,6 +29,10 @@ public class ProductInCartService {
         return productInCartRepository.findAll();
     }
 
+    public List<ProductInCart> getAllOfUser(long id) {
+        return productInCartRepository.findAllByUserId(id);
+    }
+
     public ProductInCart find(long userId, long productId) {
         return productInCartRepository
                 .findByUserIdAndProductId(userId, productId)

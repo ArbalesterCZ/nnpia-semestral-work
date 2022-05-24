@@ -5,8 +5,8 @@ import st43189.upce.cz.dto.UserDto;
 import st43189.upce.cz.entity.User;
 import st43189.upce.cz.service.UserService;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -25,11 +25,10 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> readAll() {
-        return userService
-                .getAll()
-                .stream()
-                .map(UserController::toDto)
-                .collect(Collectors.toList());
+        List<UserDto> dtoList = new LinkedList<>();
+        userService.getAll().forEach(user -> dtoList.add(toDto(user)));
+
+        return dtoList;
     }
 
     @GetMapping("/{id}")
@@ -59,7 +58,7 @@ public class UserController {
         return user;
     }
 
-    private static UserDto toDto(User user) {
+    private UserDto toDto(User user) {
         UserDto dto = new UserDto();
 
         dto.setId(user.getId());

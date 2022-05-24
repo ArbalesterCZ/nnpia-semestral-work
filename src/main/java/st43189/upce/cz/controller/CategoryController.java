@@ -5,8 +5,8 @@ import st43189.upce.cz.dto.CategoryDto;
 import st43189.upce.cz.entity.Category;
 import st43189.upce.cz.service.CategoryService;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/category")
@@ -25,11 +25,10 @@ public class CategoryController {
 
     @GetMapping
     public List<CategoryDto> readAll() {
-        return categoryService
-                .getAll()
-                .stream()
-                .map(CategoryController::toDto)
-                .collect(Collectors.toList());
+        List<CategoryDto> dtoList = new LinkedList<>();
+        categoryService.getAll().forEach(category -> dtoList.add(toDto(category)));
+
+        return dtoList;
     }
 
     @GetMapping("/{id}")
@@ -57,7 +56,7 @@ public class CategoryController {
         return category;
     }
 
-    private static CategoryDto toDto(Category category) {
+    private CategoryDto toDto(Category category) {
         CategoryDto dto = new CategoryDto();
 
         dto.setId(category.getId());

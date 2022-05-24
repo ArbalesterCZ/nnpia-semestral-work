@@ -5,8 +5,8 @@ import st43189.upce.cz.dto.ProductInCartDto;
 import st43189.upce.cz.entity.ProductInCart;
 import st43189.upce.cz.service.ProductInCartService;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/carts")
@@ -25,20 +25,10 @@ public class ProductInCartController {
 
     @GetMapping
     public List<ProductInCartDto> readAll() {
-        return productInCartService
-                .getAll()
-                .stream()
-                .map(ProductInCartController::toDto)
-                .collect(Collectors.toList());
-    }
+        List<ProductInCartDto> dtoList = new LinkedList<>();
+        productInCartService.getAll().forEach(productInCart -> dtoList.add(toDto(productInCart)));
 
-    @GetMapping("/{userId}")
-    public List<ProductInCartDto> readAllOfUser(@PathVariable long userId) {
-        return productInCartService
-                .getAllOfUser(userId)
-                .stream()
-                .map(ProductInCartController::toDto)
-                .collect(Collectors.toList());
+        return dtoList;
     }
 
     @GetMapping("/{userId}/{productId}")
@@ -61,7 +51,7 @@ public class ProductInCartController {
         return productInCart;
     }
 
-    private static ProductInCartDto toDto(ProductInCart productInCart) {
+    private ProductInCartDto toDto(ProductInCart productInCart) {
         ProductInCartDto dto = new ProductInCartDto();
 
         dto.setAmount(productInCart.getAmount());
