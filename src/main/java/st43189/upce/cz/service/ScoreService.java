@@ -2,7 +2,6 @@ package st43189.upce.cz.service;
 
 import org.springframework.stereotype.Service;
 import st43189.upce.cz.entity.Product;
-import st43189.upce.cz.entity.ProductInCart;
 import st43189.upce.cz.entity.Score;
 import st43189.upce.cz.entity.User;
 import st43189.upce.cz.repository.ProductRepository;

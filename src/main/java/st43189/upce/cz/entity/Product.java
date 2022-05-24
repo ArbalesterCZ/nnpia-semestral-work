@@ -1,7 +1,5 @@
 package st43189.upce.cz.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.Setter;
 
