@@ -1,0 +1,30 @@
+button {
+    color: whitesmoke;
+    background-color: #333333;
+    font-weight: bold;
+    border: none;
+    position: absolute;
+    margin-top: 268px;
+    width: 300px;
+    height: 32px;
+}
+
+button:hover {
+    color: white;
+    background-color: #444444;
+}
+
+h1, h2, h3, p {
+    text-align: center;
+    color: white;
+}
+
+.column {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin: 5px;
+    width: 300px;
+    height: 300px;
+}
