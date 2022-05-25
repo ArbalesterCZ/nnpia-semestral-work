@@ -2,4 +2,27 @@
 /target/
 
 .idea
-example.http
+
+# React
+# dependencies
+/e-shop/node_modules
+/e-shop/.pnp
+/e-shop/.pnp.js
+
+# testing
+/e-shop/coverage
+
+# production
+/e-shop/build
+
+# misc
+/e-shop/.DS_Store
+/e-shop/.env.local
+/e-shop/.env.development.local
+/e-shop/.env.test.local
+/e-shop/.env.production.local
+
+/e-shop/npm-debug.log*
+/e-shop/yarn-debug.log*
+/e-shop/yarn-error.log*
+
