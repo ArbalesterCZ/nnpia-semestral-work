@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/score")
 public class ScoreController {
 

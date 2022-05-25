@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/category")
 public class CategoryController {
 
