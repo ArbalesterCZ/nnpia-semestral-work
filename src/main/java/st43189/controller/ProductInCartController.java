@@ -3,6 +3,7 @@ package st43189.controller;
 import org.springframework.web.bind.annotation.*;
 import st43189.dto.ProductInCartDto;
 import st43189.entity.ProductInCart;
+import st43189.entity.UserProductKey;
 import st43189.service.ProductInCartService;
 
 import java.util.LinkedList;
@@ -48,6 +49,7 @@ public class ProductInCartController {
         productInCart.setAmount(dto.getAmount());
         productInCart.setUser(productInCartService.findUser(dto.getUserId()));
         productInCart.setProduct(productInCartService.findProduct(dto.getProductId()));
+        productInCart.setId(new UserProductKey(dto.getUserId(), dto.getProductId()));
 
         return productInCart;
     }

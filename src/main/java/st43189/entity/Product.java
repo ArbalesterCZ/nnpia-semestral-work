@@ -21,10 +21,12 @@ public class Product {
     private String name;
     @Column
     private String description;
+    @Column
+    private String image;
     @ManyToOne
     private Category category;
     @OneToMany(mappedBy = "product")
-    private Set<Score> scoreSet;
+    private Set<Score> scores;
     @OneToMany(mappedBy = "product")
-    private Set<ProductInCart> productInCartSet;
+    private Set<ProductInCart> products;
 }

@@ -3,8 +3,13 @@ package st43189.controller;
 import org.springframework.web.bind.annotation.*;
 import st43189.dto.ScoreDto;
 import st43189.entity.Score;
+import st43189.entity.UserProductKey;
 import st43189.service.ScoreService;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +26,12 @@ public class ScoreController {
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
     public ScoreDto createOrUpdate(@RequestBody ScoreDto dto) {
-        return toDto(scoreService.createOrUpdate(fromDto(dto)));
+        Score input = fromDto(dto);
+
+
+        Score output = scoreService.createOrUpdate(input);
+
+        return toDto(output);
     }
 
     @GetMapping
@@ -47,24 +57,31 @@ public class ScoreController {
 
         score.setValue(dto.getValue());
         score.setComment(dto.getComment());
-        score.setTimestamp(dto.getTimestamp());
+
+        LocalDateTime ldt = LocalDateTime.parse(dto.getTimestamp());
+        ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
+        score.setTimestamp(zdt);
 
         score.setUser(scoreService.findUser(dto.getUserId()));
         score.setProduct(scoreService.findProduct(dto.getProductId()));
+        score.setId(new UserProductKey(dto.getUserId(), dto.getProductId()));
 
         return score;
     }
 
     private ScoreDto toDto(Score score) {
-        ScoreDto scoreDto = new ScoreDto();
+        ScoreDto dto = new ScoreDto();
 
-        scoreDto.setValue(scoreDto.getValue());
-        scoreDto.setComment(scoreDto.getComment());
-        scoreDto.setTimestamp(score.getTimestamp());
+        dto.setValue(score.getValue());
+        dto.setComment(score.getComment());
 
-        scoreDto.setUserId(score.getUser().getId());
-        scoreDto.setProductId(score.getProduct().getId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String text = score.getTimestamp().format(formatter);
+        dto.setTimestamp(text.replace(' ', 'T'));
 
-        return scoreDto;
+        dto.setUserId(score.getUser().getId());
+        dto.setProductId(score.getProduct().getId());
+
+        return dto;
     }
 }

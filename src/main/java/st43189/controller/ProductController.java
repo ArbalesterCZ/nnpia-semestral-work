@@ -55,6 +55,7 @@ public class ProductController {
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
         product.setDescription(dto.getDescription());
+        product.setImage(dto.getImage());
         product.setCategory(productService.findCategory(dto.getCategoryId()));
 
         return product;
@@ -67,6 +68,7 @@ public class ProductController {
         dto.setPrice(product.getPrice());
         dto.setName(product.getName());
         dto.setDescription(product.getDescription());
+        dto.setImage(product.getImage());
         dto.setCategoryId(product.getCategory().getId());
 
         return dto;

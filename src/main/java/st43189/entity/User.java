@@ -21,7 +21,7 @@ public class User {
     @Column(nullable = false)
     private String password;
     @OneToMany(mappedBy = "user")
-    private Set<Score> scoreSet;
+    private Set<Score> scores;
     @OneToMany(mappedBy = "user")
-    private Set<ProductInCart> productInCartSet;
+    private Set<ProductInCart> products;
 }
