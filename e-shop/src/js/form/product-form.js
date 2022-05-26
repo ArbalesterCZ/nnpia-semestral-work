@@ -1,7 +1,6 @@
-import './css/product-form.css'
 import {useEffect, useState} from "react";
 
-function ProductForm({onAdd, token}) {
+function ProductForm({token}) {
 
     const MIN_PRICE = 1;
 
@@ -22,9 +21,9 @@ function ProductForm({onAdd, token}) {
     }, [])
 
     const product = {
-        price: price,
-        name: name,
-        description: description,
+        price,
+        name,
+        description,
         categoryId: category
     }
 
@@ -40,8 +39,6 @@ function ProductForm({onAdd, token}) {
                 },
             body: JSON.stringify(product)
         })
-            .then(responseProduct => responseProduct.json())
-            .then(jsonProduct => onAdd(jsonProduct))
 
         setPrice(MIN_PRICE)
         setName("")
@@ -51,14 +48,16 @@ function ProductForm({onAdd, token}) {
 
     return (
         <form onSubmit={onSubmit}>
-            <input type={"number"} required={true} min={MIN_PRICE} value={price} onChange={(e) => setPrice(parseInt(e.target.value))}/>
-            <input type={"text"} required={true} placeholder={"Name"} value={name} onChange={(e) => setName(e.target.value)}/>
+            <input type={"number"} required={true} min={MIN_PRICE} value={price}
+                   onChange={(e) => setPrice(parseInt(e.target.value))}/>
+            <input type={"text"} required={true} placeholder={"Name"} value={name}
+                   onChange={(e) => setName(e.target.value)}/>
             <input type={"text"} placeholder={"Description"} value={description}
                    onChange={(e) => setDescription(e.target.value)}/>
             <select name="category" onChange={(e) => setCategory(parseInt(e.target.value))}>
                 {categories.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
             </select>
-            <input type={"submit"}/>
+            <input type={"submit"} value={"Add Product"}/>
         </form>)
 }
 

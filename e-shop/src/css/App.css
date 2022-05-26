@@ -1,7 +1,25 @@
-.products {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+::selection {
+  background: whitesmoke;
+  color: black;
+}
+
+.information, .error {
+  text-align: center;
+  height: 32px;
+  width: 200px;
+
+  font-weight: bold;
+  border-radius: 4px;
+
+  color: whitesmoke;
+}
+
+.information {
+  background-color: green;
+}
+
+.error {
+  background-color: red;
 }
 
 .App {

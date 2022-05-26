@@ -1,0 +1,22 @@
+form {
+    display: flex;
+    flex-direction: column;
+
+    position: center;
+    justify-content: center;
+    text-align: center;
+}
+
+input, select, option {
+    box-sizing: border-box;
+    width: 200px;
+    height: 32px;
+
+    color: whitesmoke;
+    background-color: black;
+}
+
+input:hover, select:hover, option:hover {
+    color: white;
+    background-color: #333333;
+}

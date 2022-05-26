@@ -1,4 +1,4 @@
-import './css/product.css'
+import '../css/product.css'
 
 function Product({item, onBuy}) {
     return (
