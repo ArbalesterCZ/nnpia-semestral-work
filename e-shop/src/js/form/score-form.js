@@ -7,12 +7,11 @@ function ScoreForm({token}) {
 
     const [value, setValue] = useState(MAX_SCORE)
     const [comment, setComment] = useState("")
-    const [timestamp, setTimestamp] = useState()
 
     const score = {
         value,
         comment,
-        timestamp,
+        timestamp: new Date().toISOString().substring(0,19),
         userId: 1,
         productId: 1
     }
@@ -20,7 +19,6 @@ function ScoreForm({token}) {
     const onSubmit = event => {
         event.preventDefault()
         console.log(score)
-
         fetch('http://localhost:8080/score', {
             method: 'POST',
             headers:
@@ -30,7 +28,8 @@ function ScoreForm({token}) {
                 },
             body: JSON.stringify(score)
         })
-
+            .then(response => response.json())
+            .then(json => console.log(json))
         setValue(MAX_SCORE)
         setComment("")
     }
@@ -41,8 +40,6 @@ function ScoreForm({token}) {
                    onChange={(e) => setValue(parseInt(e.target.value))}/>
             <input type={"text"} placeholder={"Comment"} value={comment}
                    onChange={(e) => setComment(e.target.value)}/>
-            <input type={"datetime-local"} required={true} value={timestamp}
-                   onChange={(e) => setTimestamp(e.target.value)}/>
             <input type={"submit"} value={"Add Score"}/>
         </form>)
 }

@@ -75,7 +75,7 @@ public class ScoreController {
         dto.setValue(score.getValue());
         dto.setComment(score.getComment());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String text = score.getTimestamp().format(formatter);
         dto.setTimestamp(text.replace(' ', 'T'));
 
