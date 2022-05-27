@@ -22,11 +22,13 @@ function CategoryForm({token}) {
     }
 
     return (
-        <form onSubmit={onSubmit}>
-            <input type={"text"} required={true} placeholder={"Name"} value={name}
-                   onChange={(e) => setName(e.target.value)}/>
-            <input type={"submit"} value={"Add Category"}/>
-        </form>)
+        <div className="form">
+            <form onSubmit={onSubmit}>
+                <input type={"text"} required={true} placeholder={"Name"} value={name}
+                       onChange={(e) => setName(e.target.value)}/>
+                <input type={"submit"} value={"Add Category"}/>
+            </form>
+        </div>)
 }
 
 

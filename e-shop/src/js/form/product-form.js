@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-function ProductForm({token}) {
+function ProductForm({token, showMessage}) {
 
     const MIN_PRICE = 1;
 
@@ -39,6 +39,9 @@ function ProductForm({token}) {
                 },
             body: JSON.stringify(product)
         })
+            .then(response => response.json())
+            .then(json => showMessage('Product ' + json.name + ' created'))
+            .catch(error => showMessage(error.message, 'error'))
 
         setPrice(MIN_PRICE)
         setName("")
@@ -47,18 +50,20 @@ function ProductForm({token}) {
     }
 
     return (
-        <form onSubmit={onSubmit}>
-            <input type={"number"} required={true} min={MIN_PRICE} value={price}
-                   onChange={(e) => setPrice(parseInt(e.target.value))}/>
-            <input type={"text"} required={true} placeholder={"Name"} value={name}
-                   onChange={(e) => setName(e.target.value)}/>
-            <input type={"text"} placeholder={"Description"} value={description}
-                   onChange={(e) => setDescription(e.target.value)}/>
-            <select name="category" onChange={(e) => setCategory(parseInt(e.target.value))}>
-                {categories.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </select>
-            <input type={"submit"} value={"Add Product"}/>
-        </form>)
+        <div className="form">
+            <form onSubmit={onSubmit}>
+                <input type={"number"} required={true} min={MIN_PRICE} value={price}
+                       onChange={(e) => setPrice(parseInt(e.target.value))}/>
+                <input type={"text"} required={true} placeholder={"Name"} value={name}
+                       onChange={(e) => setName(e.target.value)}/>
+                <input type={"text"} placeholder={"Description"} value={description}
+                       onChange={(e) => setDescription(e.target.value)}/>
+                <select name="category" onChange={(e) => setCategory(parseInt(e.target.value))}>
+                    {categories.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                </select>
+                <input type={"submit"} value={"Add Product"}/>
+            </form>
+        </div>)
 }
 
 

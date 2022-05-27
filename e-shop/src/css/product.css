@@ -1,18 +1,25 @@
-button {
+.buy, .details {
     color: whitesmoke;
-    background-color: #333333;
+    background-color: #333333cc;
     font-weight: bold;
     border: none;
     position: absolute;
-    margin-top: 268px;
     width: 300px;
     height: 32px;
     border-radius: 4px;
 }
 
-button:hover {
-    color: white;
-    background-color: #444444;
+.buy:hover, .details:hover {
+    color: black;
+    background-color: #cccccccc;
+}
+
+.buy {
+    margin-top: 268px;
+}
+
+.details {
+    margin-top: 236px;
 }
 
 h1, h2, h3, p {

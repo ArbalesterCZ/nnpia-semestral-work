@@ -1,62 +1,33 @@
 ::selection {
-  background: whitesmoke;
-  color: black;
+    background: whitesmoke;
+    color: black;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .information, .error {
-  text-align: center;
-  height: 32px;
-  width: 200px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-  font-weight: bold;
-  border-radius: 4px;
-
-  color: whitesmoke;
+    text-align: center;
+    font-weight: bold;
+    border: black 1px solid;
+    border-radius: 8px;
+    color: whitesmoke;
+    padding: 4px 8px;
+    margin: 4px 8px;
 }
 
 .information {
-  background-color: green;
+    background-color: #00990066;
 }
 
 .error {
-  background-color: red;
-}
-
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    background-color: #ff000066;
 }

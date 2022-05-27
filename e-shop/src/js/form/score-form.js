@@ -11,7 +11,7 @@ function ScoreForm({token}) {
     const score = {
         value,
         comment,
-        timestamp: new Date().toISOString().substring(0,19),
+        timestamp: new Date().toISOString().substring(0, 19),
         userId: 1,
         productId: 1
     }
@@ -35,13 +35,15 @@ function ScoreForm({token}) {
     }
 
     return (
-        <form onSubmit={onSubmit}>
-            <input type={"number"} required={true} min={MIN_SCORE} max={MAX_SCORE} value={value}
-                   onChange={(e) => setValue(parseInt(e.target.value))}/>
-            <input type={"text"} placeholder={"Comment"} value={comment}
-                   onChange={(e) => setComment(e.target.value)}/>
-            <input type={"submit"} value={"Add Score"}/>
-        </form>)
+        <div className="form">
+            <form onSubmit={onSubmit}>
+                <input type={"number"} required={true} min={MIN_SCORE} max={MAX_SCORE} value={value}
+                       onChange={(e) => setValue(parseInt(e.target.value))}/>
+                <input type={"text"} placeholder={"Comment"} value={comment}
+                       onChange={(e) => setComment(e.target.value)}/>
+                <input type={"submit"} value={"Add Score"}/>
+            </form>
+        </div>)
 }
 
 export default ScoreForm
