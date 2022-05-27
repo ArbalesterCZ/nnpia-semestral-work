@@ -5,6 +5,7 @@ import st43189.dto.UserDto;
 import st43189.entity.User;
 import st43189.service.UserService;
 
+import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto create(@RequestBody UserDto dto) {
+    public UserDto create(@Valid @RequestBody UserDto dto) {
         return toDto(userService.createOrUpdate((fromDto(dto))));
     }
 
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDto update(@PathVariable long id, @RequestBody UserDto dto) {
+    public UserDto update(@PathVariable long id, @Valid @RequestBody UserDto dto) {
         User user = fromDto(dto);
         user.setId(id);
         return toDto(userService.createOrUpdate(user));

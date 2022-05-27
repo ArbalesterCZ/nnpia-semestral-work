@@ -6,6 +6,7 @@ import st43189.entity.Score;
 import st43189.entity.UserProductKey;
 import st43189.service.ScoreService;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -25,9 +26,8 @@ public class ScoreController {
     }
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public ScoreDto createOrUpdate(@RequestBody ScoreDto dto) {
+    public ScoreDto createOrUpdate(@Valid @RequestBody ScoreDto dto) {
         Score input = fromDto(dto);
-
 
         Score output = scoreService.createOrUpdate(input);
 

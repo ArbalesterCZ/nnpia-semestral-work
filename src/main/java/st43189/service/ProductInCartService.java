@@ -1,5 +1,6 @@
 package st43189.service;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import st43189.entity.Product;
 import st43189.entity.ProductInCart;
@@ -29,8 +30,11 @@ public class ProductInCartService {
         return productInCartRepository.findAll();
     }
 
-    public List<ProductInCart> getAllOfUser(long id) {
-        return productInCartRepository.findAllByUserId(id);
+    public List<ProductInCart> getAllOfUser(Authentication authentication) {
+        return userRepository
+                .findByEmail(authentication.getName())
+                .map(user -> productInCartRepository.findAllByUserId(user.getId()))
+                .orElseThrow(() -> new NoSuchElementException("User" + authentication.getName() + "not found"));
     }
 
     public ProductInCart find(long userId, long productId) {
@@ -40,6 +44,8 @@ public class ProductInCartService {
     }
 
     public ProductInCart createOrUpdate(ProductInCart productInCart) {
+        Optional<ProductInCart> found = productInCartRepository.findById(productInCart.getId());
+        found.ifPresent(inCart -> productInCart.setAmount(productInCart.getAmount() + inCart.getAmount()));
         return productInCartRepository.save(productInCart);
     }
 
@@ -49,10 +55,10 @@ public class ProductInCartService {
         return found.orElseGet(found::get);
     }
 
-    public User findUser(long id) {
+    public User findUser(Authentication authentication) {
         return userRepository
-                .findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User with id [" + id + "] not found."));
+                .findByEmail(authentication.getName())
+                .orElseThrow(() -> new NoSuchElementException("User " + authentication.getName() + " not found."));
     }
 
     public Product findProduct(long id) {

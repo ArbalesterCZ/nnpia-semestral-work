@@ -1,12 +1,14 @@
 package st43189.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import st43189.entity.Category;
 import st43189.entity.Product;
 import st43189.repository.CategoryRepository;
 import st43189.repository.ProductRepository;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -21,8 +23,12 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public Page<Product> getAll(int pageNumber, int pageSize, String sortBy) {
+        return productRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortBy));
+    }
+
+    public long getCount() {
+        return productRepository.count();
     }
 
     public Product find(long id) {

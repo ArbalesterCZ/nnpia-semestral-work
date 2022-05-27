@@ -1,11 +1,14 @@
 package st43189.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import st43189.dto.ProductInCartDto;
 import st43189.entity.ProductInCart;
+import st43189.entity.User;
 import st43189.entity.UserProductKey;
 import st43189.service.ProductInCartService;
 
+import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,14 +24,14 @@ public class ProductInCartController {
     }
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public ProductInCartDto createOrUpdate(@RequestBody ProductInCartDto dto) {
-        return toDto(productInCartService.createOrUpdate(fromDto(dto)));
+    public ProductInCartDto createOrUpdate(@Valid @RequestBody ProductInCartDto dto, Authentication authentication) {
+        return toDto(productInCartService.createOrUpdate(fromDto(dto, authentication)));
     }
 
     @GetMapping
-    public List<ProductInCartDto> readAll() {
+    public List<ProductInCartDto> readAll(Authentication authentication) {
         List<ProductInCartDto> dtoList = new LinkedList<>();
-        productInCartService.getAll().forEach(productInCart -> dtoList.add(toDto(productInCart)));
+        productInCartService.getAllOfUser(authentication).forEach(productInCart -> dtoList.add(toDto(productInCart)));
 
         return dtoList;
     }
@@ -43,13 +46,15 @@ public class ProductInCartController {
         return toDto(productInCartService.delete(userId, productId));
     }
 
-    private ProductInCart fromDto(ProductInCartDto dto) {
+    private ProductInCart fromDto(ProductInCartDto dto, Authentication authentication) {
         ProductInCart productInCart = new ProductInCart();
 
+        User user = productInCartService.findUser(authentication);
+
         productInCart.setAmount(dto.getAmount());
-        productInCart.setUser(productInCartService.findUser(dto.getUserId()));
+        productInCart.setUser(user);
         productInCart.setProduct(productInCartService.findProduct(dto.getProductId()));
-        productInCart.setId(new UserProductKey(dto.getUserId(), dto.getProductId()));
+        productInCart.setId(new UserProductKey(user.getId(), dto.getProductId()));
 
         return productInCart;
     }

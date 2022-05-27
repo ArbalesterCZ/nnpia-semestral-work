@@ -5,6 +5,7 @@ import st43189.dto.CategoryDto;
 import st43189.entity.Category;
 import st43189.service.CategoryService;
 
+import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDto create(@RequestBody CategoryDto dto) {
+    public CategoryDto create(@Valid @RequestBody CategoryDto dto) {
         return toDto(categoryService.createOrUpdate(fromDto(dto)));
     }
 
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public CategoryDto update(@PathVariable long id, @RequestBody CategoryDto dto) {
+    public CategoryDto update(@PathVariable long id, @Valid @RequestBody CategoryDto dto) {
         Category category = fromDto(dto);
         category.setId(id);
         return toDto(categoryService.createOrUpdate(category));
