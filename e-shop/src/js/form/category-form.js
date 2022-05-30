@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-function CategoryForm({token}) {
+function CategoryForm({token, showMessage}) {
 
     const [name, setName] = useState("")
 
@@ -19,13 +19,21 @@ function CategoryForm({token}) {
                 },
             body: JSON.stringify(category)
         })
+            .then(response => response.json())
+            .then(json => {
+                if (json.name)
+                    showMessage('Category ' + json.name + ' added.')
+                else
+                    showMessage(json.message, 'error')
+            })
+            .catch(err => showMessage(err.message, 'error'))
     }
 
     return (
         <div className="form">
             <form onSubmit={onSubmit}>
                 <input type={"text"} required={true} placeholder={"Name"} value={name}
-                       onChange={(e) => setName(e.target.value)}/>
+                       onChange={e => setName(e.target.value)}/>
                 <input type={"submit"} value={"Add Category"}/>
             </form>
         </div>)

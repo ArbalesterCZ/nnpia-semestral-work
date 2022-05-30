@@ -13,6 +13,6 @@ public interface ProductInCartRepository extends JpaRepository<ProductInCart, Us
     Optional<ProductInCart> findByUserAndProduct(User user, Product product);
     Optional<ProductInCart> findByUserIdAndProductId(long userId, long productId);
 
-    List<ProductInCart> findAllByUserId(long id);
+    List<ProductInCart> findAllByUserIdOrderById(long id);
     List<ProductInCart> findAllByProductId(long id);
 }

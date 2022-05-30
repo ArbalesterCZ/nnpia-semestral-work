@@ -1,8 +1,10 @@
 package st43189.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import st43189.dto.ScoreDto;
 import st43189.entity.Score;
+import st43189.entity.User;
 import st43189.entity.UserProductKey;
 import st43189.service.ScoreService;
 
@@ -26,8 +28,8 @@ public class ScoreController {
     }
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public ScoreDto createOrUpdate(@Valid @RequestBody ScoreDto dto) {
-        Score input = fromDto(dto);
+    public ScoreDto createOrUpdate(@Valid @RequestBody ScoreDto dto, Authentication authentication) {
+        Score input = fromDto(dto, authentication);
 
         Score output = scoreService.createOrUpdate(input);
 
@@ -35,9 +37,9 @@ public class ScoreController {
     }
 
     @GetMapping
-    public List<ScoreDto> readAll() {
+    public List<ScoreDto> readAll(@RequestParam long productId) {
         List<ScoreDto> dtoList = new LinkedList<>();
-        scoreService.getAll().forEach(score -> dtoList.add(toDto(score)));
+        scoreService.getAllOfProduct(productId).forEach(score -> dtoList.add(toDto(score)));
 
         return dtoList;
     }
@@ -52,7 +54,7 @@ public class ScoreController {
         return toDto(scoreService.delete(userId, productId));
     }
 
-    private Score fromDto(ScoreDto dto) {
+    private Score fromDto(ScoreDto dto, Authentication authentication) {
         Score score = new Score();
 
         score.setValue(dto.getValue());
@@ -62,9 +64,11 @@ public class ScoreController {
         ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
         score.setTimestamp(zdt);
 
-        score.setUser(scoreService.findUser(dto.getUserId()));
+        User user = scoreService.findUser(authentication);
+
+        score.setUser(user);
         score.setProduct(scoreService.findProduct(dto.getProductId()));
-        score.setId(new UserProductKey(dto.getUserId(), dto.getProductId()));
+        score.setId(new UserProductKey(user.getId(), dto.getProductId()));
 
         return score;
     }
@@ -81,6 +85,9 @@ public class ScoreController {
 
         dto.setUserId(score.getUser().getId());
         dto.setProductId(score.getProduct().getId());
+
+        dto.setUserName(score.getUser().getName());
+        dto.setProductName(score.getProduct().getName());
 
         return dto;
     }

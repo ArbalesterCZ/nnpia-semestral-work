@@ -4,11 +4,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import st43189.entity.Category;
 import st43189.entity.Product;
 import st43189.repository.CategoryRepository;
 import st43189.repository.ProductRepository;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 

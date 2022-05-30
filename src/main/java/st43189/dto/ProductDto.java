@@ -1,6 +1,7 @@
 package st43189.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -19,4 +20,5 @@ public class ProductDto {
     private String image;
 
     private long categoryId;
+    private String categoryName;
 }

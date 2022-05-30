@@ -1,5 +1,6 @@
 package st43189.service;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import st43189.entity.Product;
 import st43189.entity.Score;
@@ -29,6 +30,10 @@ public class ScoreService {
         return scoreRepository.findAll();
     }
 
+    public List<Score> getAllOfProduct(long productId) {
+        return scoreRepository.findAllByProductId(productId);
+    }
+
     public List<Score> getAllOfUser(long id) {
         return scoreRepository.findAllByUserId(id);
     }
@@ -49,10 +54,10 @@ public class ScoreService {
         return found.orElseGet(found::get);
     }
 
-    public User findUser(long id) {
+    public User findUser(Authentication authentication) {
         return userRepository
-                .findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User with id [" + id + "] not found."));
+                .findByEmail(authentication.getName())
+                .orElseThrow(() -> new NoSuchElementException("User" + authentication.getName() + "not found."));
     }
 
     public Product findProduct(long id) {

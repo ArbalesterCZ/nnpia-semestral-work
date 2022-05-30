@@ -3,10 +3,20 @@
     color: black;
 }
 
+.app {
+    margin: 0 50px;
+}
+
 nav {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+span {
+    background-color: #00000099;
+    border-radius: 10px;
+    padding: 0 8px;
 }
 
 .information, .error {
@@ -25,9 +35,23 @@ nav {
 }
 
 .information {
-    background-color: #00990066;
+    background-color: #00990099;
 }
 
 .error {
-    background-color: #ff000066;
+    background-color: #ff000099;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.commentary {
+    background-color: black;
+    border: whitesmoke 2px solid;
+}
+
+.description {
+    padding: 10px
 }

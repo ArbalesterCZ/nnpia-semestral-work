@@ -1,8 +1,11 @@
 .form {
     display: flex;
     justify-content: center;
+    margin: 50px;
+}
 
-    border: 5px solid red;
+.login {
+    margin-top: 200px;
 }
 
 form {
@@ -13,7 +16,7 @@ form {
     border: 4px solid whitesmoke;
 }
 
-input, select, option {
+input, select, option, textarea {
     box-sizing: border-box;
     width: 200px;
     height: 32px;
@@ -22,7 +25,18 @@ input, select, option {
     background-color: black;
 }
 
-input:hover, select:hover, option:hover {
+input:hover, select:hover, option:hover, textarea:hover {
     color: white;
     background-color: #333333;
+}
+
+textarea {
+    width: 400px;
+    height: 128px;
+    resize: none;
+    padding: 10px;
+}
+
+.long {
+    width: 400px;
 }

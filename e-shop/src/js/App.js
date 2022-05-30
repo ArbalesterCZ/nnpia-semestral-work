@@ -6,7 +6,6 @@ import ProductForm from "./form/product-form";
 import LoginForm from "./form/login-form";
 import Products from "./products";
 import CategoryForm from "./form/category-form";
-import ScoreForm from "./form/score-form";
 
 import {
     BrowserRouter as Router,
@@ -14,8 +13,9 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import ProductDetails from "./productDetails";
+
 import Cart from "./cart";
+import ProductDetail from "./product-detail";
 
 function App() {
 
@@ -42,7 +42,7 @@ function App() {
             showMessage("Invalid Login Details", "error")
         else {
             setToken(token)
-            showMessage("Login successful")
+            showMessage("Login Successful")
         }
     }
 
@@ -61,35 +61,40 @@ function App() {
             body: JSON.stringify(cart)
         })
             .then(response => response.json())
-            .then(json => showMessage('Product ' + json.productId + ' added to the cart.'))
-            .catch(error => showMessage(error.message, 'error'))
+            .then(json =>
+            {
+                if(json.name)
+                    showMessage('Product ' + json.name + ' added to the cart.')
+                else
+                    showMessage(json.message,'error')
+            })
+            .catch(err => showMessage(err.message, 'error'))
     }
 
     return (
         <Router>
             <div className="app">
-                <nav>
-                    <ul>
-                        <li><Link to="/">Login</Link></li>
-                        <li><Link to="/products">Home</Link></li>
-                        <li><Link to="/product-form">Product form</Link></li>
-                        <li><Link to="/category-form">Category Form</Link></li>
-                        <li><Link to="/score-form">Score Form</Link></li>
-                        <li><Link to="/product-details">Product Details</Link></li>
-                        <li><Link to="/cart">Cart</Link></li>
-                    </ul>
-                </nav>
-                <Routes>
-                    <Route path="/" element={<LoginForm onLogin={onLogin}/>}/>
-                    <Route path="/products/"
-                           element={<Products token={token} onAddProductToCart={onAddProductToCart}/>}/>
-                    <Route path="/product-form" element={<ProductForm token={token} showMessage={showMessage}/>}/>
-                    <Route path="/category-form" element={<CategoryForm token={token}/>}/>
-                    <Route path="/score-form" element={<ScoreForm token={token}/>}/>
-                    <Route path="/product-details"
-                           element={<ProductDetails token={token} onBuy={onAddProductToCart}/>}/>
-                    <Route path="/cart" element={<Cart token={token}/>}/>
-                </Routes>
+                {token &&
+                <>
+                    <nav>
+                        <ul>
+                            <button onClick={() => setToken("")}>Log Out</button>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/product-form">Product form</Link></li>
+                            <li><Link to="/category-form">Category Form</Link></li>
+                            <li><Link to="/cart">Cart</Link></li>
+                        </ul>
+                    </nav>
+                    <Routes>
+                        <Route path="/" element={<Products token={token} onAddProductToCart={onAddProductToCart}/>}/>
+                        <Route path="/product-form" element={<ProductForm token={token} showMessage={showMessage}/>}/>
+                        <Route path="/category-form" element={<CategoryForm token={token} showMessage={showMessage}/>}/>
+                        <Route path="/cart" element={<Cart token={token}/>}/>
+                        <Route path="/products/:id" element={<ProductDetail token={token} showMessage={showMessage}/>}/>
+                    </Routes>
+                </>
+                }
+                {!token && <LoginForm onLogin={onLogin}/>}
                 {report.message && <div className={report.type}>{report.message}</div>}
             </div>
         </Router>

@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-function ScoreForm({token}) {
+function ScoreForm({token, productId, showMessage, onUpdateCommentary}) {
 
     const MIN_SCORE = 0
     const MAX_SCORE = 10
@@ -11,14 +11,12 @@ function ScoreForm({token}) {
     const score = {
         value,
         comment,
+        productId,
         timestamp: new Date().toISOString().substring(0, 19),
-        userId: 1,
-        productId: 1
     }
 
     const onSubmit = event => {
         event.preventDefault()
-        console.log(score)
         fetch('http://localhost:8080/score', {
             method: 'POST',
             headers:
@@ -29,7 +27,8 @@ function ScoreForm({token}) {
             body: JSON.stringify(score)
         })
             .then(response => response.json())
-            .then(json => console.log(json))
+            .then(json => onUpdateCommentary(json))
+            .catch(err => showMessage(err.message, 'error'))
         setValue(MAX_SCORE)
         setComment("")
     }
@@ -37,11 +36,14 @@ function ScoreForm({token}) {
     return (
         <div className="form">
             <form onSubmit={onSubmit}>
-                <input type={"number"} required={true} min={MIN_SCORE} max={MAX_SCORE} value={value}
-                       onChange={(e) => setValue(parseInt(e.target.value))}/>
-                <input type={"text"} placeholder={"Comment"} value={comment}
-                       onChange={(e) => setComment(e.target.value)}/>
-                <input type={"submit"} value={"Add Score"}/>
+                <textarea type='textarea' placeholder='Commentary' maxLength={255} value={comment}
+                          onChange={e => setComment(e.target.value)}/>
+                <div>
+                    <input type='number' placeholder={'Score [' + MIN_SCORE + '-' + MAX_SCORE + ']'} required={true}
+                           min={MIN_SCORE} max={MAX_SCORE} value={value}
+                           onChange={e => setValue(parseInt(e.target.value))}/>
+                    <input type='submit' value='Add Score'/>
+                </div>
             </form>
         </div>)
 }

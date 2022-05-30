@@ -10,14 +10,14 @@ function Products({token, onAddProductToCart}) {
     const [productCount, setProductCount] = useState(0)
     const [sortBy, setSortBy] = useState('id')
 
-    const onDetails = function (id) {
-        fetch('http://localhost:8080/products/' + id, {
-            method: 'GET',
-            headers: {'Authorization': token},
-        })
-            .then(response => response.json())
-            .then(json => console.log(json))
+    const changePageSize = function (value) {
+        if (!isNaN(value))
+            setSize(value)
     }
+
+    useEffect(() => {
+        setPage(Math.min(pageCount, page))
+    }, [pageCount])
 
     useEffect(() => {
         const head = {
@@ -25,7 +25,7 @@ function Products({token, onAddProductToCart}) {
             headers: {'Authorization': token}
         }
 
-        fetch('http://localhost:8080/products?pageNumber=' + page + '&sortBy=' + sortBy, head)
+        fetch('http://localhost:8080/products?pageNumber=' + page + '&pageSize=' + size + '&sortBy=' + sortBy, head)
             .then(response => response.json())
             .then(json => setItems(json))
 
@@ -34,16 +34,18 @@ function Products({token, onAddProductToCart}) {
             .then(count => setProductCount(count))
 
         setPageCount(Math.max(0, Math.ceil(productCount / size) - 1));
-    }, [page, sortBy, productCount])
+    }, [page, size, sortBy, productCount])
 
 
     return (
         <>
             <button onClick={() => setSortBy("price")}>PRICE</button>
             <button onClick={() => setSortBy("name")}>NAME</button>
+            <label htmlFor='size-page-input'>Page Size: </label>
+            <input id='size-page-input' type='number' value={size} min={1} max={50}
+                   onChange={e => changePageSize(parseInt(e.target.value))}/>
             <div className={"products"}>
-                {items.map(item => <Product key={item.id} item={item} onBuy={onAddProductToCart}
-                                            onDetails={onDetails}/>)}
+                {items.map(item => <Product key={item.id} product={item} onBuy={onAddProductToCart}/>)}
             </div>
             <div>
                 <button onClick={() => setPage(Math.max(0, page - 1))}>Prev</button>

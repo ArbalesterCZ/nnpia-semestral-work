@@ -24,12 +24,12 @@ function LoginForm({onLogin}) {
     }
 
     return (
-        <div className="form">
+        <div className='form login'>
             <form onSubmit={onSubmit}>
                 <input type={"email"} required={true} placeholder={"Email"} value={username}
-                       onChange={(e) => setUsername(e.target.value)}/>
+                       onChange={e => setUsername(e.target.value)}/>
                 <input type={"password"} required={true} placeholder={"Password"} value={password}
-                       onChange={(e) => setPassword(e.target.value)}/>
+                       onChange={e => setPassword(e.target.value)}/>
                 <input type={"submit"} value={"Login"}/>
             </form>
         </div>

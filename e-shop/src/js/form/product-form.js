@@ -2,12 +2,13 @@ import {useEffect, useState} from "react";
 
 function ProductForm({token, showMessage}) {
 
-    const MIN_PRICE = 1;
+    const MIN_PRICE = 5;
 
     const [price, setPrice] = useState(MIN_PRICE)
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [category, setCategory] = useState(1)
+    const [categoryId, setCategoryId] = useState(1)
+    const [image, setImage] = useState("")
 
     const [categories, setCategories] = useState([])
 
@@ -24,11 +25,13 @@ function ProductForm({token, showMessage}) {
         price,
         name,
         description,
-        categoryId: category
+        image,
+        categoryId
     }
 
     const onSubmit = event => {
         event.preventDefault()
+        console.log(product)
 
         fetch('http://localhost:8080/products', {
             method: 'POST',
@@ -46,22 +49,34 @@ function ProductForm({token, showMessage}) {
         setPrice(MIN_PRICE)
         setName("")
         setDescription("")
-        setCategory(1)
+        setCategoryId(1)
     }
 
     return (
         <div className="form">
             <form onSubmit={onSubmit}>
-                <input type={"number"} required={true} min={MIN_PRICE} value={price}
-                       onChange={(e) => setPrice(parseInt(e.target.value))}/>
-                <input type={"text"} required={true} placeholder={"Name"} value={name}
-                       onChange={(e) => setName(e.target.value)}/>
-                <input type={"text"} placeholder={"Description"} value={description}
-                       onChange={(e) => setDescription(e.target.value)}/>
-                <select name="category" onChange={(e) => setCategory(parseInt(e.target.value))}>
-                    {categories.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-                </select>
-                <input type={"submit"} value={"Add Product"}/>
+                <div>
+                    <input type='number' placeholder='price' required={true} min={MIN_PRICE} value={price} step={5}
+                           onChange={e => {
+                               const tryParse = parseInt(e.target.value)
+                               if (!isNaN(tryParse))
+                                   setPrice(tryParse)
+                           }}/>
+                    <input type='text' required={true} placeholder='Name' value={name}
+                           onChange={e => setName(e.target.value)}/>
+                </div>
+                <textarea placeholder={"Description"} value={description} maxLength={255}
+                          onChange={e => setDescription(e.target.value)}/>
+                <div>
+                    <input className='long' type='file' placeholder='Image' accept='image/*'
+                           onChange={e => setImage(e.target.value.substring(e.target.value.lastIndexOf("\\") + 1))}/>
+                </div>
+                <div>
+                    <select name='category' onChange={e => setCategoryId(parseInt(e.target.value))}>
+                        {categories.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                    </select>
+                    <input type='submit' value='Add Product'/>
+                </div>
             </form>
         </div>)
 }

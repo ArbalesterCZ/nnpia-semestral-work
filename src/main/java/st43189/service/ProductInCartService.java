@@ -33,7 +33,7 @@ public class ProductInCartService {
     public List<ProductInCart> getAllOfUser(Authentication authentication) {
         return userRepository
                 .findByEmail(authentication.getName())
-                .map(user -> productInCartRepository.findAllByUserId(user.getId()))
+                .map(user -> productInCartRepository.findAllByUserIdOrderById(user.getId()))
                 .orElseThrow(() -> new NoSuchElementException("User" + authentication.getName() + "not found"));
     }
 
@@ -43,14 +43,25 @@ public class ProductInCartService {
                 .orElseThrow(() -> new NoSuchElementException("Product in cart with user id [" + userId + "] and product id [" + productId + "] not found."));
     }
 
-    public ProductInCart createOrUpdate(ProductInCart productInCart) {
-        Optional<ProductInCart> found = productInCartRepository.findById(productInCart.getId());
-        found.ifPresent(inCart -> productInCart.setAmount(productInCart.getAmount() + inCart.getAmount()));
-        return productInCartRepository.save(productInCart);
+    public ProductInCart addProductToCart(ProductInCart addToCart) {
+        Optional<ProductInCart> found = productInCartRepository.findById(addToCart.getId());
+        found.ifPresent(inCart -> addToCart.setAmount(addToCart.getAmount() + inCart.getAmount()));
+        return productInCartRepository.save(addToCart);
     }
 
-    public ProductInCart delete(long userId, long productId) {
-        Optional<ProductInCart> found = productInCartRepository.findByUserIdAndProductId(userId, productId);
+    public ProductInCart updateProductInCart(ProductInCart input) {
+        Optional<ProductInCart> found = productInCartRepository.findById(input.getId());
+
+        if (found.isPresent()) {
+            ProductInCart output = found.get();
+            output.setAmount(input.getAmount());
+            return productInCartRepository.save(output);
+        }
+        return new ProductInCart();
+    }
+
+    public ProductInCart delete(ProductInCart deleteFromCart) {
+        Optional<ProductInCart> found = productInCartRepository.findById(deleteFromCart.getId());
         found.ifPresent(productInCartRepository::delete);
         return found.orElseGet(found::get);
     }

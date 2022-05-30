@@ -2,7 +2,9 @@ package st43189.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import st43189.dto.CartProductResultDto;
 import st43189.dto.ProductInCartDto;
+import st43189.entity.Product;
 import st43189.entity.ProductInCart;
 import st43189.entity.User;
 import st43189.entity.UserProductKey;
@@ -23,27 +25,32 @@ public class ProductInCartController {
         this.productInCartService = productInCartService;
     }
 
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public ProductInCartDto createOrUpdate(@Valid @RequestBody ProductInCartDto dto, Authentication authentication) {
-        return toDto(productInCartService.createOrUpdate(fromDto(dto, authentication)));
+    @PostMapping
+    public CartProductResultDto create(@Valid @RequestBody ProductInCartDto dto, Authentication authentication) {
+        return toDto(productInCartService.addProductToCart(fromDto(dto, authentication)));
+    }
+
+    @PutMapping
+    public CartProductResultDto update(@Valid @RequestBody ProductInCartDto dto, Authentication authentication) {
+        return toDto(productInCartService.updateProductInCart(fromDto(dto, authentication)));
     }
 
     @GetMapping
-    public List<ProductInCartDto> readAll(Authentication authentication) {
-        List<ProductInCartDto> dtoList = new LinkedList<>();
+    public List<CartProductResultDto> readAll(Authentication authentication) {
+        List<CartProductResultDto> dtoList = new LinkedList<>();
         productInCartService.getAllOfUser(authentication).forEach(productInCart -> dtoList.add(toDto(productInCart)));
 
         return dtoList;
     }
 
     @GetMapping("/{userId}/{productId}")
-    public ProductInCartDto read(@PathVariable long userId, @PathVariable long productId) {
+    public CartProductResultDto read(@PathVariable long userId, @PathVariable long productId) {
         return toDto(productInCartService.find(userId, productId));
     }
 
-    @DeleteMapping("/{userId}/{productId}}")
-    public ProductInCartDto delete(@PathVariable long userId, @PathVariable long productId) {
-        return toDto(productInCartService.delete(userId, productId));
+    @DeleteMapping
+    public CartProductResultDto delete(@RequestBody ProductInCartDto dto, Authentication authentication) {
+        return toDto(productInCartService.delete(fromDto(dto, authentication)));
     }
 
     private ProductInCart fromDto(ProductInCartDto dto, Authentication authentication) {
@@ -59,13 +66,15 @@ public class ProductInCartController {
         return productInCart;
     }
 
-    private ProductInCartDto toDto(ProductInCart productInCart) {
-        ProductInCartDto dto = new ProductInCartDto();
+    private CartProductResultDto toDto(ProductInCart productInCart) {
+        CartProductResultDto dto = new CartProductResultDto();
 
         dto.setAmount(productInCart.getAmount());
+        dto.setId(productInCart.getId().getProductId());
 
-        dto.setUserId(productInCart.getUser().getId());
-        dto.setProductId(productInCart.getProduct().getId());
+        Product product = productInCart.getProduct();
+        dto.setPrice(product.getPrice());
+        dto.setName(product.getName());
 
         return dto;
     }

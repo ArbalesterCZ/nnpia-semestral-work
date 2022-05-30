@@ -22,7 +22,7 @@ public class ProductController {
 
     @PostMapping
     public ProductDto create(@Valid @RequestBody ProductDto dto) {
-        return toDto(productService.createOrUpdate((fromDto(dto))));
+        return toDto(productService.createOrUpdate(fromDto(dto)));
     }
 
     @GetMapping
@@ -79,6 +79,7 @@ public class ProductController {
         dto.setDescription(product.getDescription());
         dto.setImage(product.getImage());
         dto.setCategoryId(product.getCategory().getId());
+        dto.setCategoryName(product.getCategory().getName());
 
         return dto;
     }
