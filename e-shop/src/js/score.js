@@ -9,10 +9,14 @@ function Score({token, productId, showMessage}) {
     const updateCommentary = function (json) {
         const copy = [...score]
         const find = copy.find(item => item.userId === json.userId)
-        find.value = json.value
-        find.comment = json.comment
+        if (find) {
+            find.value = json.value
+            find.comment = json.comment
+        } else
+            copy.push(json)
+
+        showMessage('Score with value [' + json.value + '] added to evaluation.')
         setScore(copy)
-        showMessage('Score with value [' + find.value + '] added to evaluation.')
     }
 
     useEffect(() => {
@@ -36,7 +40,8 @@ function Score({token, productId, showMessage}) {
 
     return (
         <div>
-            <ScoreForm token={token} productId={productId} showMessage={showMessage} onUpdateCommentary={updateCommentary}/>
+            <ScoreForm token={token} productId={productId} showMessage={showMessage}
+                       onUpdateCommentary={updateCommentary}/>
             <h1>Scores</h1>
             <h2>Total Score: {totalScore}</h2>
             {score.map(item =>
