@@ -6,7 +6,7 @@
 ## BACKEND
 
 ### PRODUCTS
-| operation | Path | Parameters | Body | Description
+| Operation | Path | Parameters | Body | Description |
 | --- | --- | --- | --- | --- |
 | `POST`   | /products | | price, name, description, image | Create new product |
 | `GET`    | /products | pageNumber, pageSize, sortBy| | Get all products |
@@ -16,7 +16,7 @@
 
 
 ### CATEGORY
-| operation | Path | Parameters | Body | Description
+| Operation | Path | Parameters | Body | Description |
 | --- | --- | --- | --- | --- |
 | `POST`   | /category | | name | Create new category |
 | `GET`    | /category | | | Get all categories |
@@ -26,32 +26,34 @@
 
 
 ### USERS
-| operation | Path | Parameters | Body | Description
+| Operation | Path | Parameters | Body | Description |
 | --- | --- | --- | --- | --- |
 | `POST`   | /users | | name, email, password | Create new user |
 | `GET`    | /users | | | Get all users |
 | `GET`    | /users/***{id}*** | | | Get specific user |
+| `GET`    | /users/logged | | | Get logged user |
 | `PUT`    | /users/***{id}*** | | name, email, password | Update specific user |
+| `PUT`    | /users/logged | | name, email, password | Update logged user |
 | `DELETE` | /users/***{id}*** | | | Delete specific user |
 
 
 ### SCORE
-| operation | Path | Parameters | Body | Description
+| Operation | Path | Parameters | Body | Description |
 | --- | --- | --- | --- | --- |
-| `POST`   | /score | | value, productId | Create new score |
-| `GET`    | /score/***{productId}*** | | | Get all scores of specific product |
+| `POST`   | /score | | value, productId | Create new score of specific product and logged user|
+| `GET`    | /score | productId | | Get all scores of specific product or get all scores as default |
 | `GET`    | /score/***{userId}***/***{productId}*** | | | Get specific score |
-| `PUT`    | /score | | value, productId | Update specific score |
+| `PUT`    | /score | | value, productId | Update specific score of product and logged user |
 | `DELETE` | /score/***{userId}***/***{productId}*** | | | Delete specific score |
 
 
 ### CART
-| operation | Path | Parameters | Body | Description
+| Operation | Path | Parameters | Body | Description |
 | --- | --- | --- | --- | --- |
-| `POST`   | /cart | | amount, comment, productId | Create new product in cart |
-| `GET`    | /cart | | | Get all products in cart of specific user |
-| `GET`    | /cart/***{userId}***/***{productId}*** | | | Get specific product in score |
-| `PUT`    | /cart | | amount, comment, productId | Update specific product in score |
-| `DELETE` | /cart | | | Delete specific product in cart |
+| `POST`   | /cart | | amount, comment, productId | Create new product in cart for logged user |
+| `GET`    | /cart | | | Get all products in cart of logged user |
+| `GET`    | /cart/***{userId}***/***{productId}*** | | | Get specific product in cart |
+| `PUT`    | /cart | | amount, comment, productId | Update specific product in cart of logged user |
+| `DELETE` | /cart | | productId | Delete specific product in cart of logged user |
 
 ## FRONTEND
