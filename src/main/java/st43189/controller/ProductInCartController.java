@@ -25,14 +25,9 @@ public class ProductInCartController {
         this.productInCartService = productInCartService;
     }
 
-    @PostMapping
-    public CartProductResultDto create(@Valid @RequestBody ProductInCartDto dto, Authentication authentication) {
+    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+    public CartProductResultDto createOrUpdate(@Valid @RequestBody ProductInCartDto dto, Authentication authentication) {
         return toDto(productInCartService.addProductToCart(fromDto(dto, authentication)));
-    }
-
-    @PutMapping
-    public CartProductResultDto update(@Valid @RequestBody ProductInCartDto dto, Authentication authentication) {
-        return toDto(productInCartService.updateProductInCart(fromDto(dto, authentication)));
     }
 
     @GetMapping

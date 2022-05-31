@@ -37,9 +37,12 @@ public class ScoreController {
     }
 
     @GetMapping
-    public List<ScoreDto> readAll(@RequestParam long productId) {
+    public List<ScoreDto> readAll(@RequestParam(defaultValue = "0") long productId) {
         List<ScoreDto> dtoList = new LinkedList<>();
-        scoreService.getAllOfProduct(productId).forEach(score -> dtoList.add(toDto(score)));
+        if (productId == 0)
+            scoreService.getAll().forEach(score -> dtoList.add(toDto(score)));
+        else
+            scoreService.getAllOfProduct(productId).forEach(score -> dtoList.add(toDto(score)));
 
         return dtoList;
     }
