@@ -1,4 +1,4 @@
-.buy, .details {
+.one, .two, .three {
     color: whitesmoke;
     background-color: #333333cc;
     font-weight: bold;
@@ -9,17 +9,21 @@
     border-radius: 4px;
 }
 
-.buy:hover, .details:hover {
+.one:hover, .two:hover, .three:hover {
     color: black;
     background-color: #cccccccc;
 }
 
-.buy {
-    margin-top: 268px;
+.three {
+    margin-top: 194px;
 }
 
-.details {
+.two {
     margin-top: 232px;
+}
+
+.one {
+    margin-top: 268px;
 }
 
 h1, h2, h3, p {

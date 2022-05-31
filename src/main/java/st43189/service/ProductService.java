@@ -41,6 +41,9 @@ public class ProductService {
     }
 
     public Product createOrUpdate(Product product) {
+        if (product.getId() != 0 && product.getImage() == null)
+            product.setImage(productRepository.getOne(product.getId()).getImage());
+
         return productRepository.save(product);
     }
 

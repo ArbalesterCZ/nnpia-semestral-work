@@ -1,19 +1,27 @@
 import '../css/product.css'
-import {useNavigate} from "react-router-dom";
-import {useCallback} from "react";
 
-function Product({product, onBuy}) {
-
-    const navigate = useNavigate();
-    const LinkToDetailHandler = useCallback(() => navigate('/products/' + product.id, {replace: true}), [navigate]);
+function Product({
+                     id,
+                     title,
+                     subtitle,
+                     description,
+                     image,
+                     onClickOne,
+                     onClickTwo,
+                     onClickThree,
+                     buttonOneName,
+                     buttonTwoName,
+                     buttonThreeName
+                 }) {
 
     return (
-        <div className='column' style={{backgroundImage: 'url(http://localhost:8080/images/' + product.image + ')'}}>
-            <h2><span>{product.name}</span></h2>
-            <h3><span>{product.price} CZK</span></h3>
-            <div><span>{product.description.substring(0, 32) + '...'}</span></div>
-            <button className='details' onClick={LinkToDetailHandler}>View Detail</button>
-            <button className='buy' onClick={() => onBuy(product)}>To the Cart</button>
+        <div className='column' style={{backgroundImage: 'url(http://localhost:8080/images/' + image + ')'}}>
+            {title && <h2><span>{title}</span></h2>}
+            {subtitle && <h3><span>{subtitle}</span></h3>}
+            {description && <div><span>{description.substring(0, 32) + '...'}</span></div>}
+            {onClickThree && <button className='three' onClick={() => onClickThree(id)}>{buttonThreeName}</button>}
+            {onClickTwo && <button className='two' onClick={() => onClickTwo(id)}>{buttonTwoName}</button>}
+            {onClickOne && <button className='one' onClick={() => onClickOne(id)}>{buttonOneName}</button>}
         </div>
     )
 }

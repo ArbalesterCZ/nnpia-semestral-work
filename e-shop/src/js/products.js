@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import Product from "./product";
+import {useNavigate} from "react-router-dom";
 
 function Products({token, onAddProductToCart}) {
 
@@ -14,8 +15,16 @@ function Products({token, onAddProductToCart}) {
     const [sortBy, setSortBy] = useState('id')
 
     const changePageSize = function (value) {
-        if (!isNaN(value) && value >= MIN_PAGE_SIZE && value <= MAX_PAGE_SIZE)
-            setSize(value)
+        (!isNaN(value) && value >= MIN_PAGE_SIZE && value <= MAX_PAGE_SIZE) && setSize(value)
+    }
+
+    const navigate = useNavigate();
+    const navigateToSpecificProduct = function (id) {
+        navigate('/products/' + id, {replace: true})
+    }
+
+    const navigateToSpecificProductForm = function (id) {
+        navigate('/product-form/' + id, {replace: true})
     }
 
     useEffect(() => {
@@ -48,7 +57,21 @@ function Products({token, onAddProductToCart}) {
             <input className='ultra-short' id='size-page-input' type='number' value={size} min={MIN_PAGE_SIZE}
                    max={MAX_PAGE_SIZE} onChange={e => changePageSize(parseInt(e.target.value))}/>
             <div className={"products"}>
-                {items.map(item => <Product key={item.id} product={item} onBuy={onAddProductToCart}/>)}
+                {items.map(item => <Product
+                    key={item.id}
+                    id={item.id}
+                    url='/products/'
+                    title={item.name}
+                    subtitle={item.price + ' CZK'}
+                    description={item.description}
+                    image={item.image}
+                    buttonThreeName='Edit Product'
+                    onClickThree={navigateToSpecificProductForm}
+                    buttonTwoName='Product Details'
+                    onClickTwo={navigateToSpecificProduct}
+                    buttonOneName='Add To the Cart'
+                    onClickOne={onAddProductToCart}
+                />)}
             </div>
             <div>
                 <button className='standard' onClick={() => setPage(Math.max(0, page - 1))}>Prev</button>

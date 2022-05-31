@@ -65,10 +65,10 @@ function App() {
             setToken(token)
     }
 
-    const onAddProductToCart = function (product) {
+    const onAddProductToCart = function (productId) {
         const cart = {
             amount: 1,
-            productId: product.id
+            productId
         }
         fetch('http://localhost:8080/carts', {
             method: 'POST',
@@ -112,6 +112,7 @@ function App() {
                         <Route path="/products/:id" element={<ProductDetail token={token} showMessage={showMessage}/>}/>
                         <Route path="/user" element={<UserForm token={token} showMessage={showMessage}
                                                                onChangeUser={onChangeUserInfo}/>}/>
+                        <Route path="/product-form/:id" element={<ProductForm token={token} showMessage={showMessage}/>}/>
                     </Routes>
                 </>
                 }
