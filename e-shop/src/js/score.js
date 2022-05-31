@@ -8,7 +8,7 @@ function Score({token, productId, showMessage}) {
 
     const updateCommentary = function (json) {
         const copy = [...score]
-        const find = copy.find(item => item.id === json.id)
+        const find = copy.find(item => item.userId === json.userId)
         find.value = json.value
         find.comment = json.comment
         setScore(copy)

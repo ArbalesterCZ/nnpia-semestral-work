@@ -17,6 +17,7 @@ function ScoreForm({token, productId, showMessage, onUpdateCommentary}) {
 
     const onSubmit = event => {
         event.preventDefault()
+        console.log(score)
         fetch('http://localhost:8080/score', {
             method: 'POST',
             headers:
