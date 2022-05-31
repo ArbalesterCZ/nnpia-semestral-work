@@ -19,6 +19,13 @@ span {
     padding: 0 8px;
 }
 
+mark {
+    background-color: whitesmoke;
+    color: black;
+    border-radius: 8px;
+    padding: 2px 8px;
+}
+
 .information, .error {
     position: fixed;
     top: 50%;

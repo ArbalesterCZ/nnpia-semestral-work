@@ -75,9 +75,10 @@ function Cart({token}) {
             <thead>
             <tr>
                 <th>Product</th>
-                <th>Price Per One</th>
+                <th>Price</th>
                 <th>Amount</th>
                 <th>Subtotal Price</th>
+                <th/>
             </tr>
             </thead>
             <tbody>
@@ -85,7 +86,8 @@ function Cart({token}) {
                 <tr key={product.id}>
                     <td key={product.id + 'product'}>{product.name}</td>
                     <td key={product.id + 'price'}>{product.price}</td>
-                    <td key={product.id + 'amount'}><input type={"number"}
+                    <td key={product.id + 'amount'}><input className='short'
+                                                           type={"number"}
                                                            min={1}
                                                            onChange={e => changeProductInCartAmount(parseInt(e.target.value), product)}
                                                            value={product.amount}/>

@@ -8,6 +8,23 @@
     margin-top: 200px;
 }
 
+.ultra-short {
+    width: 50px;
+}
+
+.short {
+    width: 100px;
+}
+
+.long {
+    width: 400px;
+}
+
+.disabled, .disabled:hover {
+    background-color: dimgrey;
+    color: white;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -37,6 +54,18 @@ textarea {
     padding: 10px;
 }
 
-.long {
-    width: 400px;
+.standard {
+    color: whitesmoke;
+    background-color: black;
+    border: whitesmoke 1px solid;
+    border-radius: 8px;
+
+    padding: 8px;
+    margin: 2px;
+}
+
+.standard:hover {
+    color: black;
+    background-color: whitesmoke;
+    border: black 1px solid;
 }

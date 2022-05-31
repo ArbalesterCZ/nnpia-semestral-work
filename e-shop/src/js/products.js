@@ -3,6 +3,9 @@ import Product from "./product";
 
 function Products({token, onAddProductToCart}) {
 
+    const MIN_PAGE_SIZE = 1
+    const MAX_PAGE_SIZE = 50
+
     const [items, setItems] = useState([])
     const [page, setPage] = useState(0)
     const [size, setSize] = useState(4)
@@ -11,7 +14,7 @@ function Products({token, onAddProductToCart}) {
     const [sortBy, setSortBy] = useState('id')
 
     const changePageSize = function (value) {
-        if (!isNaN(value))
+        if (!isNaN(value) && value >= MIN_PAGE_SIZE && value <= MAX_PAGE_SIZE)
             setSize(value)
     }
 
@@ -39,17 +42,17 @@ function Products({token, onAddProductToCart}) {
 
     return (
         <>
-            <button onClick={() => setSortBy("price")}>PRICE</button>
-            <button onClick={() => setSortBy("name")}>NAME</button>
+            <button className='standard' onClick={() => setSortBy("price")}>PRICE</button>
+            <button className='standard' onClick={() => setSortBy("name")}>NAME</button>
             <label htmlFor='size-page-input'>Page Size: </label>
-            <input id='size-page-input' type='number' value={size} min={1} max={50}
-                   onChange={e => changePageSize(parseInt(e.target.value))}/>
+            <input className='ultra-short' id='size-page-input' type='number' value={size} min={MIN_PAGE_SIZE}
+                   max={MAX_PAGE_SIZE} onChange={e => changePageSize(parseInt(e.target.value))}/>
             <div className={"products"}>
                 {items.map(item => <Product key={item.id} product={item} onBuy={onAddProductToCart}/>)}
             </div>
             <div>
-                <button onClick={() => setPage(Math.max(0, page - 1))}>Prev</button>
-                <button onClick={() => setPage(Math.min(pageCount, page + 1))}>Next</button>
+                <button className='standard' onClick={() => setPage(Math.max(0, page - 1))}>Prev</button>
+                <button className='standard' onClick={() => setPage(Math.min(pageCount, page + 1))}>Next</button>
                 <div className={"pages"}>{page} / {pageCount}</div>
             </div>
         </>

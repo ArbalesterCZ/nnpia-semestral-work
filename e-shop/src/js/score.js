@@ -4,7 +4,9 @@ import ScoreForm from "./form/score-form";
 function Score({token, productId, showMessage}) {
 
     const [score, setScore] = useState([])
-    const [totalScore, setTotalScore] = useState("Not Rated")
+
+    const [totalScoreValue, setTotalScoreValue] = useState(0)
+    const [totalScoreCount, setTotalScoreLength] = useState(0)
 
     const updateCommentary = function (json) {
         const copy = [...score]
@@ -32,10 +34,9 @@ function Score({token, productId, showMessage}) {
     useEffect(() => {
         let value = 0
         score.map(item => value += item.value)
+        setTotalScoreLength(score.length)
         if (score.length > 0)
-            setTotalScore(value / score.length + '/10')
-        else
-            setTotalScore("Not Rated")
+            setTotalScoreValue(value / score.length)
     }, [score])
 
     return (
@@ -43,7 +44,9 @@ function Score({token, productId, showMessage}) {
             <ScoreForm token={token} productId={productId} showMessage={showMessage}
                        onUpdateCommentary={updateCommentary}/>
             <h1>Scores</h1>
-            <h2>Total Score: {totalScore}</h2>
+            {totalScoreCount !== 0 &&
+            <h2>Total Score: <mark>{totalScoreValue}</mark> with <mark>{totalScoreCount}</mark> reviews</h2>}
+            {totalScoreCount === 0 && <h2>Not Rated Yet</h2>}
             {score.map(item =>
                 <div key={item.userId + 'score-div'} className='commentary'>
                     <h2 key={item.userId + 'score-value'}>{item.value}/10</h2>

@@ -1,5 +1,6 @@
 package st43189.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import st43189.dto.UserDto;
 import st43189.entity.User;
@@ -38,11 +39,21 @@ public class UserController {
         return toDto(userService.find(id));
     }
 
+    @GetMapping("/logged")
+    public UserDto readLoggedUser(Authentication authentication) {
+        return toDto(userService.find(authentication.getName()));
+    }
+
     @PutMapping("/{id}")
     public UserDto update(@PathVariable long id, @Valid @RequestBody UserDto dto) {
         User user = fromDto(dto);
         user.setId(id);
         return toDto(userService.createOrUpdate(user));
+    }
+
+    @PutMapping("/logged")
+    public UserDto updateLoggedUser(Authentication authentication, @Valid @RequestBody UserDto dto) {
+        return toDto(userService.createOrUpdate(fromDto(dto), authentication, dto.getOldPassword()));
     }
 
     @DeleteMapping("/{id}")
@@ -55,7 +66,7 @@ public class UserController {
 
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        user.setPassword(userService.encode(dto.getPassword()));
+        user.setPassword(dto.getPassword());
 
         return user;
     }
@@ -66,7 +77,6 @@ public class UserController {
         dto.setId(user.getId());
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
-        dto.setPassword(user.getPassword());
 
         return dto;
     }

@@ -1,7 +1,7 @@
 import '../css/App.css'
 import '../css/forms.css'
 import '../css/navigation.css'
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import ProductForm from "./form/product-form";
 import LoginForm from "./form/login-form";
 import Products from "./products";
@@ -16,34 +16,53 @@ import {
 
 import Cart from "./cart";
 import ProductDetail from "./product-detail";
+import UserForm from "./form/user-form";
 
 function App() {
 
     const [token, setToken] = useState("")
+    const [user, setUser] = useState("");
 
     const [message, setMessage] = useState("")
     const [type, setType] = useState("")
-    const [lastReportId, setLastReportId] = useState()
+    const [lastReportMessageId, setLastReportMessageId] = useState()
 
     const report = {
         message,
         type
     }
 
+    useEffect(() => {
+        if (token !== "")
+            fetch('http://localhost:8080/users/logged', {
+                method: 'GET',
+                headers: {'Authorization': token}
+            })
+                .then(response => response.json())
+                .then(json => {
+                    setUser(json)
+                    showMessage("Login Successful")
+                })
+                .catch(err => showMessage(err.message, 'error'))
+    }, [token])
+
+    const onChangeUserInfo = function (changedUser) {
+        setUser(changedUser)
+        showMessage('User ' + changedUser.name + ' information changed')
+    }
+
     const showMessage = function (message, type = 'information') {
-        clearTimeout(lastReportId)
+        clearTimeout(lastReportMessageId)
         setMessage(message)
         setType(type)
-        setLastReportId(setTimeout(() => setMessage(""), 4000))
+        setLastReportMessageId(setTimeout(() => setMessage(""), 4000))
     }
 
     const onLogin = function (token) {
         if (token === "Bearer undefined")
             showMessage("Invalid Login Details", "error")
-        else {
+        else
             setToken(token)
-            showMessage("Login Successful")
-        }
     }
 
     const onAddProductToCart = function (product) {
@@ -61,12 +80,11 @@ function App() {
             body: JSON.stringify(cart)
         })
             .then(response => response.json())
-            .then(json =>
-            {
-                if(json.name)
+            .then(json => {
+                if (json.name)
                     showMessage('Product ' + json.name + ' added to the cart.')
                 else
-                    showMessage(json.message,'error')
+                    showMessage(json.message, 'error')
             })
             .catch(err => showMessage(err.message, 'error'))
     }
@@ -78,11 +96,12 @@ function App() {
                 <>
                     <nav>
                         <ul>
-                            <button onClick={() => setToken("")}>Log Out</button>
+                            <button className='standard' onClick={() => setToken("")}>Log Out {user.name}</button>
                             <li><Link to="/">Home</Link></li>
                             <li><Link to="/product-form">Product form</Link></li>
                             <li><Link to="/category-form">Category Form</Link></li>
                             <li><Link to="/cart">Cart</Link></li>
+                            <li><Link to="/user">User Account</Link></li>
                         </ul>
                     </nav>
                     <Routes>
@@ -91,6 +110,8 @@ function App() {
                         <Route path="/category-form" element={<CategoryForm token={token} showMessage={showMessage}/>}/>
                         <Route path="/cart" element={<Cart token={token}/>}/>
                         <Route path="/products/:id" element={<ProductDetail token={token} showMessage={showMessage}/>}/>
+                        <Route path="/user" element={<UserForm token={token} showMessage={showMessage}
+                                                               onChangeUser={onChangeUserInfo}/>}/>
                     </Routes>
                 </>
                 }

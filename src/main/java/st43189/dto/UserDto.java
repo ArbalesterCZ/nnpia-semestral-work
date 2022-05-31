@@ -13,4 +13,5 @@ public class UserDto {
     @NotNull
     private String email;
     private String password;
+    private String oldPassword;
 }
