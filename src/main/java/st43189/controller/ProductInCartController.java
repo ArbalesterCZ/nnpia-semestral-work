@@ -38,11 +38,6 @@ public class ProductInCartController {
         return dtoList;
     }
 
-    @GetMapping("/{userId}/{productId}")
-    public CartProductResultDto read(@PathVariable long userId, @PathVariable long productId) {
-        return toDto(productInCartService.find(userId, productId));
-    }
-
     @DeleteMapping
     public CartProductResultDto delete(@RequestBody ProductInCartDto dto, Authentication authentication) {
         return toDto(productInCartService.delete(fromDto(dto, authentication)));

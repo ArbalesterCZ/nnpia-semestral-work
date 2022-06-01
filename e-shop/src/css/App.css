@@ -3,6 +3,10 @@
     color: black;
 }
 
+a {
+    color: #ffd700
+}
+
 .app {
     margin: 0 50px;
 }

@@ -1,4 +1,4 @@
-.one, .two, .three {
+.one, .two, .three, .four {
     color: whitesmoke;
     background-color: #333333cc;
     font-weight: bold;
@@ -9,13 +9,19 @@
     border-radius: 4px;
 }
 
-.one:hover, .two:hover, .three:hover {
+.one:hover, .two:hover, .three:hover, .four:hover {
     color: black;
     background-color: #cccccccc;
 }
 
+.four {
+    margin-top: 158px;
+    background-color: #99000099;
+}
+
 .three {
     margin-top: 194px;
+    background-color: #99990099;
 }
 
 .two {

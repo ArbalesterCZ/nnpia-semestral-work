@@ -1,5 +1,6 @@
 package st43189.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import st43189.dto.ScoreDto;
@@ -47,12 +48,8 @@ public class ScoreController {
         return dtoList;
     }
 
-    @GetMapping("/{userId}/{productId}")
-    public ScoreDto read(@PathVariable long userId, @PathVariable long productId) {
-        return toDto(scoreService.find(userId, productId));
-    }
-
     @DeleteMapping("/{userId}/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ScoreDto delete(@PathVariable long userId, @PathVariable long productId) {
         return toDto(scoreService.delete(userId, productId));
     }

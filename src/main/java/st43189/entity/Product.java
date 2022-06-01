@@ -21,12 +21,16 @@ public class Product {
     private String name;
     @Column
     private String description;
-    @Column
+    @Column(nullable = false)
     private String image;
+    @Column(columnDefinition = "boolean default true")
+    private boolean enabled;
     @ManyToOne
     private Category category;
     @OneToMany(mappedBy = "product")
     private Set<Score> scores;
     @OneToMany(mappedBy = "product")
     private Set<ProductInCart> products;
+    @OneToMany(mappedBy = "product")
+    private Set<ProductAtOrder> productAtOrders;
 }

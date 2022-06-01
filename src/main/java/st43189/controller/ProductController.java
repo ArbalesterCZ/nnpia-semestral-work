@@ -1,5 +1,6 @@
 package st43189.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import st43189.dto.ProductDto;
 import st43189.entity.Product;
@@ -21,6 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ProductDto create(@Valid @RequestBody ProductDto dto) {
         return toDto(productService.createOrUpdate(fromDto(dto)));
     }
@@ -47,6 +49,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ProductDto update(@PathVariable long id, @Valid @RequestBody ProductDto dto) {
         Product product = fromDto(dto);
         product.setId(id);
@@ -54,6 +57,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ProductDto delete(@PathVariable long id) {
         return toDto(productService.delete(id));
     }
@@ -65,6 +69,7 @@ public class ProductController {
         product.setPrice(dto.getPrice());
         product.setDescription(dto.getDescription());
         product.setImage(dto.getImage());
+        product.setEnabled(true);
         product.setCategory(productService.findCategory(dto.getCategoryId()));
 
         return product;

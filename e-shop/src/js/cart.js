@@ -1,5 +1,5 @@
 import '../css/table.css'
-import {useEffect, useState} from "react";
+import {useEffect, useState} from "react"
 
 function Cart({token}) {
 
@@ -49,6 +49,15 @@ function Cart({token}) {
         })
             .then(response => response.json())
             .then(json => removeProductFromCart(json.id))
+    }
+
+    const onClickSendOrder = function () {
+        fetch('http://localhost:8080/orders', {
+            method: 'POST',
+            headers: {'Authorization': token}
+        })
+            .then(() => setProducts([]))
+            .catch(err => console.log(err.message))
     }
 
     useEffect(() => {
@@ -103,10 +112,13 @@ function Cart({token}) {
                 <td/>
                 <td>{quantity}</td>
                 <td>{totalPrice}</td>
-                <td/>
+                <td>
+                    {products.length > 0 && <button className='standard' onClick={onClickSendOrder}>Send Order</button>}
+                </td>
             </tr>
             </tbody>
-        </table>)
+        </table>
+    )
 }
 
 export default Cart

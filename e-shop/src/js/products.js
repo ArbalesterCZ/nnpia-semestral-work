@@ -2,10 +2,12 @@ import {useEffect, useState} from "react";
 import Product from "./product";
 import {useNavigate} from "react-router-dom";
 
-function Products({token, onAddProductToCart}) {
+function Products({isAdmin, token, showMessage, onAddProductToCart}) {
 
     const MIN_PAGE_SIZE = 1
     const MAX_PAGE_SIZE = 50
+
+    const navigate = useNavigate();
 
     const [items, setItems] = useState([])
     const [page, setPage] = useState(0)
@@ -18,13 +20,22 @@ function Products({token, onAddProductToCart}) {
         (!isNaN(value) && value >= MIN_PAGE_SIZE && value <= MAX_PAGE_SIZE) && setSize(value)
     }
 
-    const navigate = useNavigate();
     const navigateToSpecificProduct = function (id) {
         navigate('/products/' + id, {replace: true})
     }
 
     const navigateToSpecificProductForm = function (id) {
         navigate('/product-form/' + id, {replace: true})
+    }
+
+    const deleteSpecificProduct = function (id) {
+        fetch('http://localhost:8080/products/' + id, {
+            method: 'DELETE',
+            headers: {'Authorization': token},
+        })
+            .then(response => response.json())
+            .then(json => setItems(items.filter(item => item.id !== json.id)))
+            .catch(err => showMessage(err.message))
     }
 
     useEffect(() => {
@@ -40,14 +51,15 @@ function Products({token, onAddProductToCart}) {
         fetch('http://localhost:8080/products?pageNumber=' + page + '&pageSize=' + size + '&sortBy=' + sortBy, head)
             .then(response => response.json())
             .then(json => setItems(json))
+            .catch(err => showMessage(err.message))
 
         fetch('http://localhost:8080/products/count', head)
             .then(response => response.json())
             .then(count => setProductCount(count))
+            .catch(err => showMessage(err.message))
 
         setPageCount(Math.max(0, Math.ceil(productCount / size) - 1));
     }, [page, size, sortBy, productCount])
-
 
     return (
         <>
@@ -65,8 +77,10 @@ function Products({token, onAddProductToCart}) {
                     subtitle={item.price + ' CZK'}
                     description={item.description}
                     image={item.image}
-                    buttonThreeName='Edit Product'
-                    onClickThree={navigateToSpecificProductForm}
+                    buttonFourName={isAdmin ? 'Delete Product' : ''}
+                    onClickFour={isAdmin ? deleteSpecificProduct : ''}
+                    buttonThreeName={isAdmin ? 'Edit Product' : ''}
+                    onClickThree={isAdmin ? navigateToSpecificProductForm : ''}
                     buttonTwoName='Product Details'
                     onClickTwo={navigateToSpecificProduct}
                     buttonOneName='Add To the Cart'

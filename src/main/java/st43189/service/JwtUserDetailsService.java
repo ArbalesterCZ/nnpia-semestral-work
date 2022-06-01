@@ -1,8 +1,10 @@
 package st43189.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,7 +26,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         Optional<st43189.entity.User> found = userRepository.findByEmail(email);
         if (found.isPresent())
-            return new User(email, found.get().getPassword(), new ArrayList<>());
+            if ("st43189@upce.cz".equals(email))
+                return new User(email, found.get().getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+            else
+                return new User(email, found.get().getPassword(), new ArrayList<>());
 
         throw new UsernameNotFoundException("User not found with email: " + email);
     }

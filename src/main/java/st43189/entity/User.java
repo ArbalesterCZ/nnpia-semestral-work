@@ -24,4 +24,6 @@ public class User {
     private Set<Score> scores;
     @OneToMany(mappedBy = "user")
     private Set<ProductInCart> products;
+    @OneToMany(mappedBy = "product")
+    private Set<ProductAtOrder> productAtOrders;
 }

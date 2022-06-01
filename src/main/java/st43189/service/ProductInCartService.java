@@ -45,7 +45,7 @@ public class ProductInCartService {
 
     public ProductInCart addProductToCart(ProductInCart addToCart) {
         Optional<ProductInCart> found = productInCartRepository.findById(addToCart.getId());
-        found.ifPresent(inCart -> addToCart.setAmount(addToCart.getAmount() + inCart.getAmount()));
+        found.ifPresent(inCart -> addToCart.setAmount(addToCart.getAmount()));
         return productInCartRepository.save(addToCart);
     }
 
