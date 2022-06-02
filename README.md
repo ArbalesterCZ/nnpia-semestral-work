@@ -57,3 +57,18 @@
 | `DELETE` | /cart | | productId | Delete specific product in cart of logged user |
 
 ## FRONTEND
+
+### ADMIN VIEW
+![admin-gui](rsc/images/admin-gui.png)
+
+### USER VIEW
+![user-gui](rsc/images/user-gui.png)
+
+### PRODUCT FORM
+![product-form](rsc/images/product-form.png)
+
+### CART
+![cart](rsc/images/cart.png)
+
+### ORDERS
+![orders](rsc/images/orders.png)
